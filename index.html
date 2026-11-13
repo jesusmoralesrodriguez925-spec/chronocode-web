@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChronoCode | El agente de IA de código abierto para tu terminal</title>
+  <meta name="description" content="El agente de IA de código abierto que corre en tu terminal. Funciona en Android (Termux), Windows, macOS y Linux.">
+  <style>
+    :root {
+      --bg: #0a0f0c;
+      --bg-card: #0f1812;
+      --border: #1f3328;
+      --green: #22c55e;
+      --green-dim: #15803d;
+      --text: #e5f5ea;
+      --muted: #8aa796;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "SF Mono", "Fira Code", Consolas, "Courier New", monospace;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--green); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+      background: radial-gradient(ellipse at top, rgba(34,197,94,0.12), transparent 60%);
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      border: 2px solid var(--green);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 30px rgba(34,197,94,0.25);
+    }
+
+    .logo span {
+      color: var(--green);
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      letter-spacing: -0.5px;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 em {
+      color: var(--green);
+      font-style: normal;
+    }
+
+    .tagline {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      max-width: 620px;
+      margin: 0 auto 32px;
+      font-size: 0.95rem;
+    }
+
+    .terminal {
+      max-width: 560px;
+      margin: 0 auto;
+      background: #050806;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-align: left;
+      overflow: hidden;
+    }
+
+    .terminal-bar {
+      background: var(--bg-card);
+      padding: 10px 14px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .terminal-bar i {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+      display: block;
+    }
+
+    .terminal pre {
+      padding: 18px;
+      font-size: 0.85rem;
+      color: var(--green);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .terminal pre .dim { color: var(--muted); }
+
+    /* SECTIONS */
+    section { padding: 70px 0; }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      margin-bottom: 12px;
+    }
+
+    .section-title::before {
+      content: "// ";
+      color: var(--green);
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    /* FEATURES */
+    .grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--green-dim);
+      transform: translateY(-3px);
+    }
+
+    .card .icon {
+      color: var(--green);
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    /* PRICING */
+    .pricing {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .plan {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .plan.pro {
+      border-color: var(--green);
+      box-shadow: 0 0 40px rgba(34,197,94,0.15);
+    }
+
+    .plan h3 {
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+    }
+
+    .price {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin: 12px 0 4px;
+    }
+
+    .price small {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .plan ul {
+      list-style: none;
+      margin: 18px 0 24px;
+      flex: 1;
+    }
+
+    .plan li {
+      padding: 6px 0;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .plan li::before {
+      content: "> ";
+      color: var(--green);
+    }
+
+    .plan li.muted {
+      color: var(--muted);
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      border-radius: 8px;
+      border: 1px solid var(--green);
+      background: transparent;
+      color: var(--green);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--green);
+      color: #04120a;
+      text-decoration: none;
+    }
+
+    .btn.primary {
+      background: var(--green);
+      color: #04120a;
+    }
+
+    .btn.primary:hover {
+      background: #16a34a;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      background: var(--green);
+      color: #04120a;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    .note {
+      margin-top: 18px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 30px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    footer .links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .hero { padding: 50px 0 40px; }
+      section { padding: 50px 0; }
+      .terminal pre { font-size: 0.78rem; padding: 14px; }
+      .plan { padding: 26px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="container">
+      <div class="logo"><span>&gt;_</span></div>
+      <h1>Chrono<em>Code</em></h1>
+      <p class="tagline">El agente de IA de código abierto que corre en tu terminal</p>
+      <p class="subtitle">Diseñado para funcionar en cualquier sistema operativo (Android, Windows, macOS, Linux) sin necesidad de una PC potente.</p>
+
+      <div class="terminal" aria-hidden="true">
+        <div class="terminal-bar"><i></i><i></i><i></i></div>
+        <pre><span class="dim">$</span> chronocode
+<span class="dim">></span> crea un archivo hola.py con un saludo
+<span class="dim">✔</span> Write(hola.py) — 1 línea escrita</pre>
+      </div>
+    </div>
+  </header>
+
+  <section id="ventajas">
+    <div class="container">
+      <h2 class="section-title">Ventajas clave</h2>
+      <p class="section-sub">Todo lo que necesitas para programar desde donde estés.</p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="icon">[ ]</div>
+          <h3>Multiplataforma</h3>
+          <p>Funciona en Termux, Windows, Mac y Linux. Un solo agente para todos tus equipos, incluido tu celular.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">[ ]</div>
+          <h3>Modo BYOK</h3>
+          <p>Trae tu propia API Key de Groq, OpenAI, Gemini o Claude. Tú eliges el modelo y controlas tu gasto.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">[ ]</div>
+          <h3>Plan Pro sin configuración</h3>
+          <p>¿No tienes API Key? Con Pro no necesitas crear cuentas en proveedores de IA: empiezas a trabajar en minutos.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">[ ]</div>
+          <h3>Código abierto</h3>
+          <p>100% transparente y auditable. Revisa el código, contribuye y adáptalo a tu flujo de trabajo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="precios">
+    <div class="container">
+      <h2 class="section-title">Precios</h2>
+      <p class="section-sub">Empieza gratis. Pasa a Pro cuando lo necesites.</p>
+
+      <div class="pricing">
+        <div class="plan">
+          <h3>Gratis <span class="badge" style="background:transparent;color:var(--muted);border:1px solid var(--border);">BYOK</span></h3>
+          <div class="price">$0 <small>para siempre</small></div>
+          <ul>
+            <li>Usa tu propia API Key</li>
+            <li>Groq, OpenAI, Gemini o Claude</li>
+            <li>Código abierto completo</li>
+            <li class="muted">Requiere que tu proveedor de IA esté disponible en tu país</li>
+          </ul>
+          <a class="btn" href="https://github.com/jesusmoralesrodriguez925-spec/chronocode" target="_blank" rel="noopener">Ver en GitHub</a>
+        </div>
+
+        <div class="plan pro">
+          <h3>Pro <span class="badge">RECOMENDADO</span></h3>
+          <div class="price">$5 <small>/ mes</small></div>
+          <ul>
+            <li>Sin necesidad de API Key propia</li>
+            <li>Infraestructura en la nube gestionada por nosotros</li>
+            <li>Licencia validada por nuestro backend</li>
+            <li>Soporte prioritario</li>
+          </ul>
+          <button class="btn primary" id="btn-pro" type="button">Comprar con USDT</button>
+        </div>
+      </div>
+
+      <p class="note">Los precios están en dólares. Pagos con USDT vía Binance Pay.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="https://github.com/jesusmoralesrodriguez925-spec/chronocode" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/jesusmoralesrodriguez925-spec/chronocode/issues" target="_blank" rel="noopener">Reportar un problema</a>
+      </div>
+      <p>&copy; <span id="year"></span> ChronoCode. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    document.getElementById("btn-pro").addEventListener("click", function () {
+      alert("Redirigiendo a Binance Pay...");
+    });
+  </script>
+
+</body>
+</html>
