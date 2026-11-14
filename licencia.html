@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tu licencia | ChronoCode</title>
+  <style>
+    body { background:#0a0f0c; color:#e5f5ea; font-family: monospace; display:flex;
+           min-height:100vh; align-items:center; justify-content:center; margin:0; padding:20px; }
+    .box { max-width:520px; width:100%; border:1px solid #1f3328; border-radius:12px;
+           padding:28px; background:#0f1812; text-align:center; }
+    code { display:block; background:#050806; color:#22c55e; padding:14px; border-radius:8px;
+           word-break:break-all; margin:16px 0; }
+    button { background:#22c55e; color:#04120a; border:0; padding:12px 20px; border-radius:8px;
+             font-weight:700; cursor:pointer; font-family:inherit; }
+    .muted { color:#8aa796; font-size:.9rem; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Tu licencia Pro</h2>
+    <p id="estado" class="muted">Verificando el pago...</p>
+    <code id="clave" hidden></code>
+    <button id="copiar" hidden>Copiar licencia</button>
+    <p class="muted">Válida por 30 días. Guárdala: se muestra una sola vez en esta página.</p>
+  </div>
+<script>
+  const API = "https://chronocode-billing.onrender.com"; // <-- Pon tu URL real de Render aquí
+  const order = new URLSearchParams(location.search).get("order");
+  const estado = document.getElementById("estado");
+  const clave = document.getElementById("clave");
+  const copiar = document.getElementById("copiar");
+
+  async function consultar(intentos = 0) {
+    if (!order) { estado.textContent = "Pedido no válido."; return; }
+    try {
+      const r = await fetch(`${API}/pagos/licencia?order=${order}`);
+      const d = await r.json();
+      if (d.estado === "pagado") {
+        estado.textContent = "Pago confirmado.";
+        clave.textContent = d.clave;
+        clave.hidden = false;
+        copiar.hidden = false;
+        return;
+      }
+    } catch (e) { /* reintenta */ }
+    if (intentos < 60) setTimeout(() => consultar(intentos + 1), 5000);
+    else estado.textContent = "Aún no vemos tu pago. Si ya pagaste, guarda este enlace y vuelve en unos minutos.";
+  }
+
+  copiar.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(clave.textContent);
+    copiar.textContent = "Copiado";
+  });
+
+  consultar();
+</script>
+</body>
+</html>

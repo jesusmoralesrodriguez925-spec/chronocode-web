@@ -413,12 +413,24 @@
   </footer>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+  const API = "https://chronocode-billing.onrender.com"; // <-- Pon tu URL real de Render aquí
+  const btn = document.getElementById("btn-pro");
+  const textoOriginal = btn.textContent;
 
-    document.getElementById("btn-pro").addEventListener("click", function () {
-      alert("Redirigiendo a Binance Pay...");
-    });
-  </script>
+  btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    btn.textContent = "Creando pago...";
+    try {
+      const r = await fetch(API + "/pagos/crear", { method: "POST" });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const datos = await r.json();
+      window.location.href = datos.checkout_url;
+    } catch (e) {
+      alert("No se pudo crear el pago. Intenta de nuevo en unos minutos.");
+      btn.disabled = false;
+      btn.textContent = textoOriginal;
+    }
+  });
 
-</body>
-</html>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
