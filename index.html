@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <!-- Favicon actualizado a la nueva mascota -->
-  <link rel="icon" href="mascota.svg?v=4" type="image/svg+xml">
+  <link rel="icon" href="mascota.svg?v=5" type="image/svg+xml">
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.simpleicons.org; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -42,27 +41,6 @@
       text-align: center;
       background: radial-gradient(ellipse at top, rgba(34,197,94,0.14), transparent 60%);
     }
-    
-    /* --- CSS PARA LA MASCOTA ANIMADA --- */
-    .mascota-container {
-      margin-bottom: 20px;
-      display: inline-block;
-      animation: float 3s ease-in-out infinite; 
-    }
-    .mascota-img {
-      display: block;
-      width: 150px;
-      height: auto;
-      margin: 0 auto;
-      filter: drop-shadow(0 0 25px rgba(34,197,94,0.6));
-    }
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translateY(0px); }
-    }
-    /* ---------------------------------- */
-
     .hero h1 { font-size: clamp(2rem, 6vw, 3.2rem); letter-spacing: -0.5px; margin-bottom: 14px; }
     .hero h1 em { color: var(--green); font-style: normal; }
     .tagline { font-size: clamp(1rem, 2.5vw, 1.2rem); margin-bottom: 10px; }
@@ -165,8 +143,28 @@
       .btn.big { padding: 14px 26px; font-size: 1.05rem; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .cursor, .mascota-container { animation: none; }
+      .cursor { animation: none; }
       html { scroll-behavior: auto; }
+    }
+
+    /* MASCOTA */
+    .mascota-container {
+      margin-bottom: 20px;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+    .mascota-img {
+      width: 150px;
+      height: auto;
+      filter: drop-shadow(0 0 25px rgba(34,197,94,0.6));
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .mascota-container { animation: none; }
     }
   </style>
 </head>
@@ -174,11 +172,9 @@
 
   <header class="hero">
     <div class="container">
-      <!-- Mascota Animada -->
       <div class="mascota-container">
         <img src="mascota.svg" alt="ChronoCode Mascot" class="mascota-img">
       </div>
-      
       <h1>Chrono<em>Code</em></h1>
       <p class="tagline">El agente de IA de código abierto que corre en tu terminal</p>
       <p class="subtitle">Diseñado para funcionar en cualquier sistema operativo (Android, Windows, macOS, Linux) sin necesidad de una PC potente.</p>
@@ -379,3 +375,4 @@ python3 chronocode.py</code></pre>
 
 </body>
 </html>
+
