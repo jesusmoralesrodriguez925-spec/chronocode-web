@@ -127,6 +127,7 @@
     }
     .badge:hover { border-color: var(--green); color: var(--green); }
     .badge img { width: 22px; height: 22px; display: block; }
+    .badge img.local { filter: brightness(0) invert(1); }
     .legal { margin-top: 10px; font-size: 0.75rem; color: var(--muted); }
     .providers small { display: block; margin-top: 18px; color: var(--muted); font-size: 0.82rem; }
 
@@ -217,13 +218,13 @@ python3 chronocode.py</code></pre>
       <h2 class="section-title">Proveedores soportados</h2>
       <div class="badges">
         <span class="badge"><img src="https://cdn.simpleicons.org/googlegemini/ffffff" alt="" width="22" height="22" loading="lazy">Gemini</span>
-        <span class="badge"><img src="https://cdn.simpleicons.org/groq/ffffff" alt="" width="22" height="22" loading="lazy">Groq</span>
+        <span class="badge"><img class="local" src="logos/groq.svg" alt="" width="22" height="22" loading="lazy">Groq</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/openrouter/ffffff" alt="" width="22" height="22" loading="lazy">OpenRouter</span>
-        <span class="badge"><img src="https://cdn.simpleicons.org/openai/ffffff" alt="" width="22" height="22" loading="lazy">OpenAI</span>
+        <span class="badge"><img class="local" src="logos/openai.svg" alt="" width="22" height="22" loading="lazy">OpenAI</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/anthropic/ffffff" alt="" width="22" height="22" loading="lazy">Anthropic</span>
       </div>
       <small>Si un proveedor falla, ChronoCode pasa automáticamente al siguiente que tengas configurado. Usa los que estén disponibles en tu país.</small>
-      <small class="legal">Logos de Simple Icons. Las marcas pertenecen a sus respectivos dueños.</small>
+      <small class="legal">Las marcas y logos pertenecen a sus respectivos dueños.</small>
     </div>
   </section>
 
