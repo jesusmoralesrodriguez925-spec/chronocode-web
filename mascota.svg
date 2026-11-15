@@ -1,12 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- Cuerpo central verde -->
-  <path d="M35 20 h30 v10 h10 v20 h5 v20 h-5 v10 h-30 v-10 h-10 v-20 h-5 v-20 h5 v-10 z" fill="#00ff00"/>
+  <!-- Cuerpo (forma escalonada) -->
+  <path d="M 35 15 L 65 15 L 65 25 L 75 25 L 75 75 L 65 75 L 65 85 L 35 85 L 35 75 L 25 75 L 25 25 L 35 25 Z" fill="#00FF00"/>
   
-  <!-- Ojos oscuros -->
-  <rect x="38" y="35" width="8" height="10" fill="#0a0f0c"/>
-  <rect x="54" y="35" width="8" height="10" fill="#0a0f0c"/>
+  <!-- Ojo Izquierdo -->
+  <rect x="38" y="35" width="10" height="12" fill="#1c1c2a" />
+  <rect x="38" y="35" width="4" height="4" fill="#4a4a6a" />
   
-  <!-- Manos flotantes -->
-  <rect x="10" y="45" width="10" height="10" fill="#00ff00"/>
-  <rect x="80" y="45" width="10" height="10" fill="#00ff00"/>
+  <!-- Ojo Derecho -->
+  <rect x="52" y="35" width="10" height="12" fill="#1c1c2a" />
+  <rect x="52" y="35" width="4" height="4" fill="#4a4a6a" />
+  
+  <!-- Mano Izquierda (flotante) -->
+  <rect x="10" y="45" width="10" height="10" fill="#00FF00"/>
+  
+  <!-- Mano Derecha (flotante) -->
+  <rect x="80" y="45" width="10" height="10" fill="#00FF00"/>
 </svg>
