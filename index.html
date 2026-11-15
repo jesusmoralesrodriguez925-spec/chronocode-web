@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.simpleicons.org; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,7 +76,10 @@
       text-align: left; overflow: hidden;
     }
     .terminal-bar { background: var(--bg-card); padding: 10px 14px; display: flex; gap: 6px; }
-    .terminal-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--border); display: block; }
+    .terminal-bar i { width: 12px; height: 12px; border-radius: 50%; background: var(--border); display: block; }
+    .terminal-bar i:nth-child(1) { background: #ff5f56; }
+    .terminal-bar i:nth-child(2) { background: #ffbd2e; }
+    .terminal-bar i:nth-child(3) { background: #27c93f; }
     .terminal pre {
       padding: 18px; font-size: 0.85rem; color: var(--green);
       white-space: pre-wrap; word-break: break-word; min-height: 150px;
@@ -118,10 +121,13 @@
     .providers { padding: 20px 0 60px; text-align: center; }
     .badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 20px; }
     .badge {
+      display: inline-flex; align-items: center; gap: 10px;
       border: 1px solid var(--border); background: var(--bg-card); border-radius: 999px;
-      padding: 8px 20px; font-size: 0.95rem; transition: border-color 0.2s, color 0.2s;
+      padding: 10px 22px; font-size: 0.95rem; transition: border-color 0.2s, color 0.2s;
     }
     .badge:hover { border-color: var(--green); color: var(--green); }
+    .badge img { width: 22px; height: 22px; display: block; }
+    .legal { margin-top: 10px; font-size: 0.75rem; color: var(--muted); }
     .providers small { display: block; margin-top: 18px; color: var(--muted); font-size: 0.82rem; }
 
     /* BYOK */
@@ -210,13 +216,14 @@ python3 chronocode.py</code></pre>
     <div class="container">
       <h2 class="section-title">Proveedores soportados</h2>
       <div class="badges">
-        <span class="badge">Gemini</span>
-        <span class="badge">Groq</span>
-        <span class="badge">OpenRouter</span>
-        <span class="badge">OpenAI</span>
-        <span class="badge">Anthropic</span>
+        <span class="badge"><img src="https://cdn.simpleicons.org/googlegemini/ffffff" alt="" width="22" height="22" loading="lazy">Gemini</span>
+        <span class="badge"><img src="https://cdn.simpleicons.org/groq/ffffff" alt="" width="22" height="22" loading="lazy">Groq</span>
+        <span class="badge"><img src="https://cdn.simpleicons.org/openrouter/ffffff" alt="" width="22" height="22" loading="lazy">OpenRouter</span>
+        <span class="badge"><img src="https://cdn.simpleicons.org/openai/ffffff" alt="" width="22" height="22" loading="lazy">OpenAI</span>
+        <span class="badge"><img src="https://cdn.simpleicons.org/anthropic/ffffff" alt="" width="22" height="22" loading="lazy">Anthropic</span>
       </div>
       <small>Si un proveedor falla, ChronoCode pasa automáticamente al siguiente que tengas configurado. Usa los que estén disponibles en tu país.</small>
+      <small class="legal">Logos de Simple Icons. Las marcas pertenecen a sus respectivos dueños.</small>
     </div>
   </section>
 
@@ -264,6 +271,13 @@ python3 chronocode.py</code></pre>
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---------- Logos: si uno no carga, se oculta y queda el nombre ---------- */
+  document.querySelectorAll(".badge img").forEach(function (img) {
+    var hide = function () { img.style.display = "none"; };
+    img.addEventListener("error", hide);
+    if (img.complete && img.naturalWidth === 0) hide();
+  });
 
   /* ---------- Typewriter ---------- */
   (function () {
