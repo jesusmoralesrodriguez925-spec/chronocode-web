@@ -324,6 +324,7 @@
       <h1>Chrono<em>Code</em></h1>
       <p class="tagline">El agente de IA de código abierto que corre en tu terminal</p>
       <p class="subtitle">Diseñado para funcionar en cualquier sistema operativo (Android, Windows, macOS, Linux) sin necesidad de una PC potente.</p>
+      <a href="https://github.com/jesusmoralesrodriguez925-spec/chronocode" target="_blank" class="btn primary" style="display: inline-block; width: auto; padding: 14px 32px; font-size: 1.1rem; margin-top: 20px;">Descargar en GitHub (Gratis)</a>
 
       <div class="terminal" aria-hidden="true">
         <div class="terminal-bar"><i></i><i></i><i></i></div>
@@ -333,75 +334,7 @@
       </div>
     </div>
   </header>
-
-  <section id="ventajas">
-    <div class="container">
-      <h2 class="section-title">Ventajas clave</h2>
-      <p class="section-sub">Todo lo que necesitas para programar desde donde estés.</p>
-
-      <div class="grid">
-        <div class="card">
-          <div class="icon">[ ]</div>
-          <h3>Multiplataforma</h3>
-          <p>Funciona en Termux, Windows, Mac y Linux. Un solo agente para todos tus equipos, incluido tu celular.</p>
-        </div>
-
-        <div class="card">
-          <div class="icon">[ ]</div>
-          <h3>Modo BYOK</h3>
-          <p>Trae tu propia API Key de Groq, OpenAI, Gemini o Claude. Tú eliges el modelo y controlas tu gasto.</p>
-        </div>
-
-        <div class="card">
-          <div class="icon">[ ]</div>
-          <h3>Plan Pro sin configuración</h3>
-          <p>¿No tienes API Key? Con Pro no necesitas crear cuentas en proveedores de IA: empiezas a trabajar en minutos.</p>
-        </div>
-
-        <div class="card">
-          <div class="icon">[ ]</div>
-          <h3>Código abierto</h3>
-          <p>100% transparente y auditable. Revisa el código, contribuye y adáptalo a tu flujo de trabajo.</p>
-        </div>
-      </div>
-    </div>
   </section>
-
-  <section id="precios">
-    <div class="container">
-      <h2 class="section-title">Precios</h2>
-      <p class="section-sub">Empieza gratis. Pasa a Pro cuando lo necesites.</p>
-
-      <div class="pricing">
-        <div class="plan">
-          <h3>Gratis <span class="badge" style="background:transparent;color:var(--muted);border:1px solid var(--border);">BYOK</span></h3>
-          <div class="price">$0 <small>para siempre</small></div>
-          <ul>
-            <li>Usa tu propia API Key</li>
-            <li>Groq, OpenAI, Gemini o Claude</li>
-            <li>Código abierto completo</li>
-            <li class="muted">Requiere que tu proveedor de IA esté disponible en tu país</li>
-          </ul>
-          <a class="btn" href="https://github.com/jesusmoralesrodriguez925-spec/chronocode" target="_blank" rel="noopener">Ver en GitHub</a>
-        </div>
-
-        <div class="plan pro">
-          <h3>Pro <span class="badge">RECOMENDADO</span></h3>
-          <div class="price">$5 <small>/ mes</small></div>
-          <ul>
-            <li>Sin necesidad de API Key propia</li>
-            <li>Infraestructura en la nube gestionada por nosotros</li>
-            <li>Licencia validada por nuestro backend</li>
-            <li>Soporte prioritario</li>
-          </ul>
-          <button class="btn primary" id="btn-pro" type="button">Comprar con USDT</button>
-        </div>
-      </div>
-
-      <p class="note">Los precios están en dólares. Pagos con USDT vía Binance Pay.</p>
-    </div>
-  </section>
-
   <footer>
     <div class="container">
       <div class="links">
@@ -412,25 +345,6 @@
     </div>
   </footer>
 
-  <script>
-  const API = "https://chronocode-billing.onrender.com"; // <-- Pon tu URL real de Render aquí
-  const btn = document.getElementById("btn-pro");
-  const textoOriginal = btn.textContent;
-
-  btn.addEventListener("click", async () => {
-    btn.disabled = true;
-    btn.textContent = "Creando pago...";
-    try {
-      const r = await fetch(API + "/pagos/crear", { method: "POST" });
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      const datos = await r.json();
-      window.location.href = datos.checkout_url;
-    } catch (e) {
-      alert("No se pudo crear el pago. Intenta de nuevo en unos minutos.");
-      btn.disabled = false;
-      btn.textContent = textoOriginal;
-    }
-  });
-
+<script>
   document.getElementById("year").textContent = new Date().getFullYear();
 </script>
