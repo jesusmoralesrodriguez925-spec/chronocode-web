@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ChronoCode | El agente de IA de código abierto para tu terminal</title>
-  <meta name="description" content="El agente de IA de código abierto que corre en tu terminal. Funciona en Android (Termux), Windows, macOS y Linux.">
+  <meta name="description" content="El agente de IA de código abierto que corre en tu terminal. Funciona en Android (Termux), Windows, macOS y Linux. Trae tu propia API Key.">
   <style>
     :root {
       --bg: #0a0f0c;
@@ -16,11 +16,8 @@
       --muted: #8aa796;
       --radius: 12px;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
-
     body {
       font-family: "SF Mono", "Fira Code", Consolas, "Courier New", monospace;
       background: var(--bg);
@@ -28,291 +25,127 @@
       line-height: 1.6;
       min-height: 100vh;
     }
-
     a { color: var(--green); text-decoration: none; }
     a:hover { text-decoration: underline; }
-
-    .container {
-      width: 100%;
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+    .container { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+    section { padding: 70px 0; }
 
     /* HERO */
     .hero {
       padding: 80px 0 60px;
       text-align: center;
-      background: radial-gradient(ellipse at top, rgba(34,197,94,0.12), transparent 60%);
+      background: radial-gradient(ellipse at top, rgba(34,197,94,0.14), transparent 60%);
     }
-
     .logo {
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 20px;
-      border: 2px solid var(--green);
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 72px; height: 72px; margin: 0 auto 20px;
+      border: 2px solid var(--green); border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
       box-shadow: 0 0 30px rgba(34,197,94,0.25);
+      animation: glow 3s ease-in-out infinite;
     }
-
-    .logo span {
-      color: var(--green);
-      font-size: 28px;
-      font-weight: 700;
+    .logo span { color: var(--green); font-size: 28px; font-weight: 700; }
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(34,197,94,0.2); }
+      50% { box-shadow: 0 0 42px rgba(34,197,94,0.45); }
     }
-
-    .hero h1 {
-      font-size: clamp(2rem, 6vw, 3.2rem);
-      letter-spacing: -0.5px;
-      margin-bottom: 14px;
-    }
-
-    .hero h1 em {
-      color: var(--green);
-      font-style: normal;
-    }
-
-    .tagline {
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      color: var(--text);
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      color: var(--muted);
-      max-width: 620px;
-      margin: 0 auto 32px;
-      font-size: 0.95rem;
-    }
-
-    .terminal {
-      max-width: 560px;
-      margin: 0 auto;
-      background: #050806;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      text-align: left;
-      overflow: hidden;
-    }
-
-    .terminal-bar {
-      background: var(--bg-card);
-      padding: 10px 14px;
-      display: flex;
-      gap: 6px;
-    }
-
-    .terminal-bar i {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--border);
-      display: block;
-    }
-
-    .terminal pre {
-      padding: 18px;
-      font-size: 0.85rem;
-      color: var(--green);
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .terminal pre .dim { color: var(--muted); }
-
-    /* SECTIONS */
-    section { padding: 70px 0; }
-
-    .section-title {
-      text-align: center;
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      margin-bottom: 12px;
-    }
-
-    .section-title::before {
-      content: "// ";
-      color: var(--green);
-    }
-
-    .section-sub {
-      text-align: center;
-      color: var(--muted);
-      margin-bottom: 40px;
-    }
-
-    /* FEATURES */
-    .grid {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .card:hover {
-      border-color: var(--green-dim);
-      transform: translateY(-3px);
-    }
-
-    .card .icon {
-      color: var(--green);
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-    }
-
-    .card h3 {
-      font-size: 1.05rem;
-      margin-bottom: 8px;
-    }
-
-    .card p {
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    /* PRICING */
-    .pricing {
-      display: grid;
-      gap: 20px;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .plan {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px 28px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .plan.pro {
-      border-color: var(--green);
-      box-shadow: 0 0 40px rgba(34,197,94,0.15);
-    }
-
-    .plan h3 {
-      font-size: 1.2rem;
-      margin-bottom: 6px;
-    }
-
-    .price {
-      font-size: 2.4rem;
-      font-weight: 700;
-      margin: 12px 0 4px;
-    }
-
-    .price small {
-      font-size: 0.95rem;
-      color: var(--muted);
-      font-weight: 400;
-    }
-
-    .plan ul {
-      list-style: none;
-      margin: 18px 0 24px;
-      flex: 1;
-    }
-
-    .plan li {
-      padding: 6px 0;
-      font-size: 0.92rem;
-      color: var(--text);
-    }
-
-    .plan li::before {
-      content: "> ";
-      color: var(--green);
-    }
-
-    .plan li.muted {
-      color: var(--muted);
-    }
+    .hero h1 { font-size: clamp(2rem, 6vw, 3.2rem); letter-spacing: -0.5px; margin-bottom: 14px; }
+    .hero h1 em { color: var(--green); font-style: normal; }
+    .tagline { font-size: clamp(1rem, 2.5vw, 1.2rem); margin-bottom: 10px; }
+    .subtitle { color: var(--muted); max-width: 620px; margin: 0 auto 28px; font-size: 0.95rem; }
 
     .btn {
-      display: block;
-      width: 100%;
-      padding: 13px;
-      border-radius: 8px;
-      border: 1px solid var(--green);
-      background: transparent;
-      color: var(--green);
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-align: center;
+      display: inline-block; padding: 13px 24px; border-radius: 8px;
+      border: 1px solid var(--green); background: transparent; color: var(--green);
+      font-family: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+      text-align: center; transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover { background: var(--green); color: #04120a; text-decoration: none; }
+    .btn.primary { background: var(--green); color: #04120a; }
+    .btn.primary:hover { background: #16a34a; }
+    .btn.big { padding: 16px 38px; font-size: 1.15rem; box-shadow: 0 0 28px rgba(34,197,94,0.35); }
+    .hero-cta { margin-bottom: 34px; }
+
+    /* TERMINAL */
+    .terminal {
+      max-width: 580px; margin: 0 auto; background: #050806;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      text-align: left; overflow: hidden;
+    }
+    .terminal-bar { background: var(--bg-card); padding: 10px 14px; display: flex; gap: 6px; }
+    .terminal-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--border); display: block; }
+    .terminal pre {
+      padding: 18px; font-size: 0.85rem; color: var(--green);
+      white-space: pre-wrap; word-break: break-word; min-height: 150px;
+    }
+    .terminal .dim { color: var(--muted); }
+    .cursor {
+      display: inline-block; width: 0.6em; height: 1.05em; background: var(--green);
+      vertical-align: text-bottom; animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* TITLES */
+    .section-title { text-align: center; font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 12px; }
+    .section-title::before { content: "// "; color: var(--green); }
+    .section-sub { text-align: center; color: var(--muted); margin: 0 auto 40px; max-width: 620px; }
+
+    /* QUICK START */
+    .steps { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    .os-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .os-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 14px; border-bottom: 1px solid var(--border); font-weight: 600;
+    }
+    .copy {
+      font-family: inherit; font-size: 0.8rem; cursor: pointer; color: var(--green);
+      background: transparent; border: 1px solid var(--green-dim); border-radius: 6px; padding: 4px 12px;
       transition: background 0.2s, color 0.2s;
     }
-
-    .btn:hover {
-      background: var(--green);
-      color: #04120a;
-      text-decoration: none;
+    .copy:hover { background: var(--green); color: #04120a; }
+    .copy.done { background: var(--green); color: #04120a; }
+    .os-card pre {
+      padding: 16px; font-size: 0.82rem; color: var(--green); background: #050806;
+      overflow-x: auto; white-space: pre; line-height: 1.7;
     }
+    .qs-note { text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 22px; }
+    .qs-note code { color: var(--green); }
 
-    .btn.primary {
-      background: var(--green);
-      color: #04120a;
-    }
-
-    .btn.primary:hover {
-      background: #16a34a;
-    }
-
+    /* PROVEEDORES */
+    .providers { padding: 20px 0 60px; text-align: center; }
+    .badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 20px; }
     .badge {
-      display: inline-block;
-      font-size: 0.7rem;
-      background: var(--green);
-      color: #04120a;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-weight: 700;
-      margin-left: 8px;
-      vertical-align: middle;
+      border: 1px solid var(--border); background: var(--bg-card); border-radius: 999px;
+      padding: 8px 20px; font-size: 0.95rem; transition: border-color 0.2s, color 0.2s;
     }
+    .badge:hover { border-color: var(--green); color: var(--green); }
+    .providers small { display: block; margin-top: 18px; color: var(--muted); font-size: 0.82rem; }
 
-    .note {
-      margin-top: 18px;
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-align: center;
-    }
+    /* BYOK */
+    .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .card .icon { color: var(--green); font-size: 1.3rem; margin-bottom: 10px; }
+    .card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+    .card p { color: var(--muted); font-size: 0.92rem; }
+
+    /* CTA FINAL */
+    .final { text-align: center; background: radial-gradient(ellipse at bottom, rgba(34,197,94,0.12), transparent 65%); }
+    .final p { color: var(--muted); margin-bottom: 26px; }
 
     /* FOOTER */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 30px 0;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
+    footer { border-top: 1px solid var(--border); padding: 30px 0; text-align: center; color: var(--muted); font-size: 0.85rem; }
+    footer .links { display: flex; justify-content: center; gap: 20px; margin-bottom: 12px; flex-wrap: wrap; }
 
-    footer .links {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* RESPONSIVE */
     @media (max-width: 600px) {
       .hero { padding: 50px 0 40px; }
       section { padding: 50px 0; }
       .terminal pre { font-size: 0.78rem; padding: 14px; }
-      .plan { padding: 26px 22px; }
+      .steps { grid-template-columns: 1fr; }
+      .btn.big { padding: 14px 26px; font-size: 1.05rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .logo, .cursor { animation: none; }
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
@@ -324,27 +157,193 @@
       <h1>Chrono<em>Code</em></h1>
       <p class="tagline">El agente de IA de código abierto que corre en tu terminal</p>
       <p class="subtitle">Diseñado para funcionar en cualquier sistema operativo (Android, Windows, macOS, Linux) sin necesidad de una PC potente.</p>
-      <a href="https://github.com/jesusmoralesrodriguez925-spec/chronocode" target="_blank" class="btn primary" style="display: inline-block; width: auto; padding: 14px 32px; font-size: 1.1rem; margin-top: 20px;">Descargar en GitHub (Gratis)</a>
+      <div class="hero-cta">
+        <a class="btn primary big" href="https://github.com/jesusmoralesrodriguez925-spec/chronocode" target="_blank" rel="noopener">⭐ Dar Star en GitHub</a>
+      </div>
 
-      <div class="terminal" aria-hidden="true">
+      <div class="terminal" role="img" aria-label="Demostración: se ejecuta chronocode, se pide crear hola.py y el agente lo escribe">
         <div class="terminal-bar"><i></i><i></i><i></i></div>
-        <pre><span class="dim">$</span> chronocode
-<span class="dim">></span> crea un archivo hola.py con un saludo
-<span class="dim">✔</span> Write(hola.py) — 1 línea escrita</pre>
+        <pre id="term" aria-hidden="true"></pre>
       </div>
     </div>
   </header>
+
+  <section id="quickstart">
+    <div class="container">
+      <h2 class="section-title">Quick Start</h2>
+      <p class="section-sub">Tres comandos y estás programando con IA. Elige tu sistema.</p>
+
+      <div class="steps">
+        <div class="os-card">
+          <div class="os-head"><span>Termux (Android)</span><button class="copy" type="button">Copiar</button></div>
+          <pre><code>pkg update -y &amp;&amp; pkg install -y python git
+git clone https://github.com/jesusmoralesrodriguez925-spec/chronocode.git
+cd chronocode
+pip install requests python-dotenv
+python chronocode.py</code></pre>
+        </div>
+
+        <div class="os-card">
+          <div class="os-head"><span>Windows</span><button class="copy" type="button">Copiar</button></div>
+          <pre><code>git clone https://github.com/jesusmoralesrodriguez925-spec/chronocode.git
+cd chronocode
+pip install requests python-dotenv
+python chronocode.py</code></pre>
+        </div>
+
+        <div class="os-card">
+          <div class="os-head"><span>macOS / Linux</span><button class="copy" type="button">Copiar</button></div>
+          <pre><code>git clone https://github.com/jesusmoralesrodriguez925-spec/chronocode.git
+cd chronocode
+pip3 install requests python-dotenv
+python3 chronocode.py</code></pre>
+        </div>
+      </div>
+      <p class="qs-note">En Windows instala Python desde python.org marcando <code>Add Python to PATH</code>. Al primer inicio, ChronoCode te pide tu API Key.</p>
+    </div>
   </section>
+
+  <section class="providers">
+    <div class="container">
+      <h2 class="section-title">Proveedores soportados</h2>
+      <div class="badges">
+        <span class="badge">Gemini</span>
+        <span class="badge">Groq</span>
+        <span class="badge">OpenRouter</span>
+        <span class="badge">OpenAI</span>
+        <span class="badge">Anthropic</span>
+      </div>
+      <small>Si un proveedor falla, ChronoCode pasa automáticamente al siguiente que tengas configurado. Usa los que estén disponibles en tu país.</small>
+    </div>
+  </section>
+
+  <section id="byok">
+    <div class="container">
+      <h2 class="section-title">¿Por qué BYOK?</h2>
+      <p class="section-sub">Bring Your Own Key: tú pones la API Key, ChronoCode hace el resto.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="icon">[ ]</div>
+          <h3>Sin servidores</h3>
+          <p>No hay backend ni base de datos nuestra. ChronoCode habla directo con el proveedor que elijas.</p>
+        </div>
+        <div class="card">
+          <div class="icon">[ ]</div>
+          <h3>Privado</h3>
+          <p>Tu clave vive solo en un archivo .env en tu equipo. Nosotros no recibimos tus claves ni tu código.</p>
+        </div>
+        <div class="card">
+          <div class="icon">[ ]</div>
+          <h3>Gratis</h3>
+          <p>El agente es gratuito y de código abierto. Varios proveedores ofrecen capas gratuitas con límites de uso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="container">
+      <h2 class="section-title">Súmate al proyecto</h2>
+      <p>Si ChronoCode te sirve, una estrella ayuda a que más gente lo encuentre.</p>
+      <a class="btn primary big" href="https://github.com/jesusmoralesrodriguez925-spec/chronocode" target="_blank" rel="noopener">⭐ Dar Star en GitHub</a>
+    </div>
+  </section>
+
   <footer>
     <div class="container">
       <div class="links">
         <a href="https://github.com/jesusmoralesrodriguez925-spec/chronocode" target="_blank" rel="noopener">GitHub</a>
         <a href="https://github.com/jesusmoralesrodriguez925-spec/chronocode/issues" target="_blank" rel="noopener">Reportar un problema</a>
       </div>
-      <p>&copy; <span id="year"></span> ChronoCode. Todos los derechos reservados.</p>
+      <p>&copy; <span id="year"></span> ChronoCode. Código abierto.</p>
     </div>
   </footer>
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---------- Typewriter ---------- */
+  (function () {
+    var term = document.getElementById("term");
+    var esc = function (s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;"); };
+    var steps = [
+      { prompt: "$ ", text: "chronocode", type: true },
+      { prompt: "", text: "\nChronoCode [Gemini] listo. Escribe /help para ver los comandos.\n", type: false },
+      { prompt: "\n> ", text: "crea un archivo hola.py con un saludo", type: true },
+      { prompt: "", text: "\n\u2714 Guardado: hola.py (1 l\u00ednea)\n", type: false, ok: true }
+    ];
+    var html = "";
+    function render(cursor) {
+      term.innerHTML = html + (cursor ? '<span class="cursor"></span>' : "");
+    }
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      steps.forEach(function (s) {
+        html += '<span class="dim">' + esc(s.prompt) + "</span>" + esc(s.text);
+      });
+      render(false);
+      return;
+    }
+    function run(i) {
+      if (i >= steps.length) {
+        setTimeout(function () { html = ""; run(0); }, 4500);
+        return;
+      }
+      var s = steps[i];
+      html += '<span class="dim">' + esc(s.prompt) + "</span>";
+      if (!s.type) {
+        html += esc(s.text);
+        render(true);
+        setTimeout(function () { run(i + 1); }, 700);
+        return;
+      }
+      var n = 0;
+      (function tick() {
+        if (n < s.text.length) {
+          n++;
+          var shown = html + esc(s.text.slice(0, n));
+          term.innerHTML = shown + '<span class="cursor"></span>';
+          setTimeout(tick, 45 + Math.random() * 60);
+        } else {
+          html += esc(s.text);
+          setTimeout(function () { run(i + 1); }, 600);
+        }
+      })();
+    }
+    render(true);
+    setTimeout(function () { run(0); }, 600);
+  })();
+
+  /* ---------- Botones Copiar ---------- */
+  document.querySelectorAll(".os-card").forEach(function (card) {
+    var btn = card.querySelector(".copy");
+    var code = card.querySelector("code");
+    btn.addEventListener("click", function () {
+      var text = code.innerText;
+      function done() {
+        btn.textContent = "Copiado";
+        btn.classList.add("done");
+        setTimeout(function () { btn.textContent = "Copiar"; btn.classList.remove("done"); }, 1800);
+      }
+      function fallback() {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); done(); } catch (e) { btn.textContent = "Selecciona y copia"; }
+        document.body.removeChild(ta);
+      }
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else {
+        fallback();
+      }
+    });
+  });
 </script>
+
+</body>
+</html>
+
