@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Cuerpo central verde -->
+  <path d="M35 20 h30 v10 h10 v20 h5 v20 h-5 v10 h-30 v-10 h-10 v-20 h-5 v-20 h5 v-10 z" fill="#00ff00"/>
+  
+  <!-- Ojos oscuros -->
+  <rect x="38" y="35" width="8" height="10" fill="#0a0f0c"/>
+  <rect x="54" y="35" width="8" height="10" fill="#0a0f0c"/>
+  
+  <!-- Manos flotantes -->
+  <rect x="10" y="45" width="10" height="10" fill="#00ff00"/>
+  <rect x="80" y="45" width="10" height="10" fill="#00ff00"/>
+</svg>
