@@ -239,11 +239,11 @@ python3 chronocode.py</code></pre>
         <span class="badge"><img class="local" src="logos/openai.svg" alt="" width="22" height="22" loading="lazy">OpenAI</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/anthropic/ffffff" alt="" width="22" height="22" loading="lazy">Anthropic</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/deepseek/ffffff" alt="" width="22" height="22" loading="lazy">DeepSeek</span>
-        <span class="badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="#ffffff"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>Grok (xAI)</span>
+        <span class="badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="#ffffff" role="img" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="#ffffff" stroke-width="2.6"/><path d="M1.5 22.5 L22.5 1.5" stroke="#ffffff" stroke-width="2.6" fill="none"/></svg>Grok (xAI)</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/huggingface/ffffff" alt="" width="22" height="22" loading="lazy">Hugging Face</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/meta/ffffff" alt="" width="22" height="22" loading="lazy">Meta AI</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/mistralai/ffffff" alt="" width="22" height="22" loading="lazy">Mistral AI</span>
-        <span class="badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="#ffffff"><path d="M12 24C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12zm0-2c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm-3.5-7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm7 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>Cohere</span>
+        <span class="badge"><img src="https://cdn.simpleicons.org/cohere/ffffff" alt="" width="22" height="22" loading="lazy">Cohere</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/perplexity/ffffff" alt="" width="22" height="22" loading="lazy">Perplexity</span>
       </div>
       <small>Si un proveedor falla, ChronoCode pasa automáticamente al siguiente que tengas configurado. Usa los que estén disponibles en tu país.</small>
@@ -309,12 +309,13 @@ python3 chronocode.py</code></pre>
     var term = document.getElementById("term");
     var esc = function (s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); };
     var BANNER = [
-      "  ▄████████▄  ",
-      "  ██  ██  ██  ",
+      "   ▄████████▄   ",
+      "   ██  ██  ██   ",
+      "                ",
       "███ ██████████ ███",
       "▀▀▀ ██████████ ▀▀▀",
-      "  ▀████████▀  ",
-      "     v1.0     "
+      "   ▀████████▀   ",
+      "   ChronoCode v1.0"
     ].join("\n");
     var CODE = '# Test.py\nprint("¡Hola desde ChronoCode!")';
 
@@ -326,7 +327,6 @@ python3 chronocode.py</code></pre>
     }
     function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
-    // Escribe texto letra a letra, con la salida acumulada por delante
     function typeText(prefixHtml, text, cls) {
       return new Promise(function (resolve) {
         var i = 0;
@@ -346,21 +346,16 @@ python3 chronocode.py</code></pre>
 
     async function escena() {
       out = "";
-      // 1. $ chronocode
       await typeText('<span class="dim">$ </span>', "chronocode", "");
       await wait(400);
-      // 2. Banner de la mascota
       out += '<span class="banner">' + esc(BANNER) + '</span>\n\n';
       draw(false);
       await wait(700);
-      // 3. > Crea un archivo Test.py
       await typeText('<span class="dim">&gt; </span>', "Crea un archivo Test.py", "ask");
       await wait(400);
-      // 4. Respuesta de golpe
       out += '<span class="ask">ChronoCode:</span> ¡Por supuesto! Creando el archivo...\n\n';
       draw(false);
       await wait(500);
-      // 5. Código escrito en tiempo real
       var i = 0;
       await new Promise(function (resolve) {
         (function tick() {
@@ -375,7 +370,6 @@ python3 chronocode.py</code></pre>
         })();
       });
       await wait(400);
-      // 6. Confirmación: aparece de golpe y la "s" se escribe
       out += '<span class="ask">¿Guardar en Test.py? [s/N]: </span>';
       draw(true);
       await wait(600);
@@ -383,7 +377,6 @@ python3 chronocode.py</code></pre>
       out = out.replace(/\n$/, "");
       out += '\n<span class="ok-line">✔ Guardado: Test.py</span>\n';
       draw(false);
-      // 7. Pausa y reinicio
       await wait(3000);
     }
 
