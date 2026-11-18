@@ -75,7 +75,6 @@
       min-height: 350px; font-family: inherit; line-height: 1.5;
     }
     .terminal .dim { color: var(--muted); }
-    .terminal .banner { color: var(--green); white-space: pre; word-break: normal; margin: 6px 0; }
     .terminal .ask { color: #e5f5ea; }
     .terminal .ok-line { color: #22c55e; font-weight: 700; }
     .cursor {
@@ -308,15 +307,6 @@ python3 chronocode.py</code></pre>
   (function () {
     var term = document.getElementById("term");
     var esc = function (s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); };
-    var BANNER = [
-      "   ▄████████▄   ",
-      "   ██  ██  ██   ",
-      "                ",
-      "███ ██████████ ███",
-      "▀▀▀ ██████████ ▀▀▀",
-      "   ▀████████▀   ",
-      "   ChronoCode v1.0"
-    ].join("\n");
     var CODE = '# Test.py\nprint("¡Hola desde ChronoCode!")';
 
     var out = "";
@@ -346,16 +336,21 @@ python3 chronocode.py</code></pre>
 
     async function escena() {
       out = "";
+      // 1. $ chronocode (se escribe y se presiona Enter)
       await typeText('<span class="dim">$ </span>', "chronocode", "");
       await wait(400);
-      out += '<span class="banner">' + esc(BANNER) + '</span>\n\n';
+      // 2. El agente responde directamente, sin banner
+      out += '<span class="ask">ChronoCode:</span> ¡Listo! Escribe tu petición.\n\n';
       draw(false);
       await wait(700);
+      // 3. > Crea un archivo Test.py
       await typeText('<span class="dim">&gt; </span>', "Crea un archivo Test.py", "ask");
       await wait(400);
+      // 4. Respuesta de golpe
       out += '<span class="ask">ChronoCode:</span> ¡Por supuesto! Creando el archivo...\n\n';
       draw(false);
       await wait(500);
+      // 5. Código escrito en tiempo real
       var i = 0;
       await new Promise(function (resolve) {
         (function tick() {
@@ -370,6 +365,7 @@ python3 chronocode.py</code></pre>
         })();
       });
       await wait(400);
+      // 6. Confirmación: aparece de golpe y la "s" se escribe
       out += '<span class="ask">¿Guardar en Test.py? [s/N]: </span>';
       draw(true);
       await wait(600);
@@ -377,13 +373,14 @@ python3 chronocode.py</code></pre>
       out = out.replace(/\n$/, "");
       out += '\n<span class="ok-line">✔ Guardado: Test.py</span>\n';
       draw(false);
+      // 7. Pausa y reinicio
       await wait(3000);
     }
 
     async function loop() {
       if (reduce) {
         out = '<span class="dim">$ </span>chronocode\n' +
-              '<span class="banner">' + esc(BANNER) + '</span>\n\n' +
+              '<span class="ask">ChronoCode:</span> ¡Listo! Escribe tu petición.\n\n' +
               '<span class="dim">&gt; </span>Crea un archivo Test.py\n' +
               '<span class="ask">ChronoCode:</span> ¡Por supuesto! Creando el archivo...\n\n' +
               '<span class="ask">' + esc(CODE) + '</span>\n\n' +
