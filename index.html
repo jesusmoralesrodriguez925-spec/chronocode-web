@@ -71,8 +71,8 @@
     .terminal-bar i:nth-child(3) { background: #27c93f; }
     .terminal pre {
       padding: 18px; font-size: 0.85rem; color: var(--green);
-      white-space: pre-wrap; word-break: break-word; min-height: 350px;
-      font-family: inherit; line-height: 1.5;
+      white-space: pre; overflow-x: auto; word-break: normal;
+      min-height: 350px; font-family: inherit; line-height: 1.5;
     }
     .terminal .dim { color: var(--muted); }
     .terminal .banner { color: var(--green); white-space: pre; word-break: normal; margin: 6px 0; }
@@ -121,6 +121,7 @@
     .badge:hover { border-color: var(--green); color: var(--green); }
     .badge img { width: 22px; height: 22px; display: block; }
     .badge img.local { filter: brightness(0) invert(1); }
+    .badge svg { width: 22px; height: 22px; display: block; flex-shrink: 0; }
     .providers small { display: block; margin-top: 18px; color: var(--muted); font-size: 0.82rem; }
 
     /* BYOK */
@@ -238,11 +239,11 @@ python3 chronocode.py</code></pre>
         <span class="badge"><img class="local" src="logos/openai.svg" alt="" width="22" height="22" loading="lazy">OpenAI</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/anthropic/ffffff" alt="" width="22" height="22" loading="lazy">Anthropic</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/deepseek/ffffff" alt="" width="22" height="22" loading="lazy">DeepSeek</span>
-        <span class="badge"><img src="https://icons.lobehub.com/icons/grok.svg" alt="" width="22" height="22" loading="lazy">Grok (xAI)</span>
+        <span class="badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="#ffffff"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>Grok (xAI)</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/huggingface/ffffff" alt="" width="22" height="22" loading="lazy">Hugging Face</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/meta/ffffff" alt="" width="22" height="22" loading="lazy">Meta AI</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/mistralai/ffffff" alt="" width="22" height="22" loading="lazy">Mistral AI</span>
-        <span class="badge"><img src="https://cdn.simpleicons.org/cohere/ffffff" alt="" width="22" height="22" loading="lazy">Cohere</span>
+        <span class="badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="#ffffff"><path d="M12 24C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12zm0-2c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm-3.5-7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm7 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>Cohere</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/perplexity/ffffff" alt="" width="22" height="22" loading="lazy">Perplexity</span>
       </div>
       <small>Si un proveedor falla, ChronoCode pasa automáticamente al siguiente que tengas configurado. Usa los que estén disponibles en tu país.</small>
@@ -308,13 +309,12 @@ python3 chronocode.py</code></pre>
     var term = document.getElementById("term");
     var esc = function (s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); };
     var BANNER = [
-      "  ▄████████▄",
-      "  ██  ██  ██",
-      "",
+      "  ▄████████▄  ",
+      "  ██  ██  ██  ",
       "███ ██████████ ███",
       "▀▀▀ ██████████ ▀▀▀",
-      "  ▀████████▀",
-      "ChronoCode v1.0"
+      "  ▀████████▀  ",
+      "     v1.0     "
     ].join("\n");
     var CODE = '# Test.py\nprint("¡Hola desde ChronoCode!")';
 
@@ -361,7 +361,6 @@ python3 chronocode.py</code></pre>
       draw(false);
       await wait(500);
       // 5. Código escrito en tiempo real
-      var prefijo = '<span class="dim">' + "" + '</span>';
       var i = 0;
       await new Promise(function (resolve) {
         (function tick() {
