@@ -60,7 +60,7 @@
 
     /* TERMINAL */
     .terminal {
-      max-width: 580px; margin: 0 auto; background: #050806;
+      max-width: 700px; margin: 0 auto; background: #050806;
       border: 1px solid var(--border); border-radius: var(--radius);
       text-align: left; overflow: hidden;
     }
@@ -71,9 +71,13 @@
     .terminal-bar i:nth-child(3) { background: #27c93f; }
     .terminal pre {
       padding: 18px; font-size: 0.85rem; color: var(--green);
-      white-space: pre-wrap; word-break: break-word; min-height: 150px;
+      white-space: pre-wrap; word-break: break-word; min-height: 350px;
+      font-family: inherit; line-height: 1.5;
     }
     .terminal .dim { color: var(--muted); }
+    .terminal .banner { color: var(--green); white-space: pre; word-break: normal; margin: 6px 0; }
+    .terminal .ask { color: #e5f5ea; }
+    .terminal .ok-line { color: #22c55e; font-weight: 700; }
     .cursor {
       display: inline-block; width: 0.6em; height: 1.05em; background: var(--green);
       vertical-align: text-bottom; animation: blink 1s steps(1) infinite;
@@ -140,13 +144,14 @@
     @media (max-width: 600px) {
       .hero { padding: 50px 0 40px; }
       section { padding: 50px 0; }
-      .terminal pre { font-size: 0.78rem; padding: 14px; }
+      .terminal pre { font-size: 0.78rem; padding: 14px; min-height: 300px; }
       .steps { grid-template-columns: 1fr; }
       .btn.big { padding: 14px 26px; font-size: 1.05rem; }
     }
     @media (prefers-reduced-motion: reduce) {
       .cursor { animation: none; }
       html { scroll-behavior: auto; }
+      .mascota-container { animation: none; }
     }
 
     /* MASCOTA */
@@ -165,9 +170,6 @@
       50% { transform: translateY(-15px); }
       100% { transform: translateY(0px); }
     }
-    @media (prefers-reduced-motion: reduce) {
-      .mascota-container { animation: none; }
-    }
   </style>
 </head>
 <body>
@@ -184,7 +186,7 @@
         <a class="btn primary big" href="https://github.com/jesusmoralesrodriguez925-spec/chronocode" target="_blank" rel="noopener">⭐ Dar Star en GitHub</a>
       </div>
 
-      <div class="terminal" role="img" aria-label="Demostración: se ejecuta chronocode, se pide crear hola.py y el agente lo escribe">
+      <div class="terminal" role="img" aria-label="Demostración animada: el agente se inicia, crea el archivo Test.py y lo guarda">
         <div class="terminal-bar"><i></i><i></i><i></i></div>
         <pre id="term" aria-hidden="true"></pre>
       </div>
@@ -198,7 +200,7 @@
 
       <div class="steps">
         <div class="os-card">
-          <div class="os-head"><span>Termux (Android)</span><button class="copy" type="button">Copiar</button></div>
+          <div class="os-head"><span>📱 Termux (Android)</span><button class="copy" type="button">Copiar</button></div>
           <pre><code>pkg update -y &amp;&amp; pkg install -y python git
 git clone https://github.com/jesusmoralesrodriguez925-spec/chronocode.git
 cd chronocode
@@ -207,7 +209,7 @@ python chronocode.py</code></pre>
         </div>
 
         <div class="os-card">
-          <div class="os-head"><span>Windows</span><button class="copy" type="button">Copiar</button></div>
+          <div class="os-head"><span>🖥️ Windows</span><button class="copy" type="button">Copiar</button></div>
           <pre><code>git clone https://github.com/jesusmoralesrodriguez925-spec/chronocode.git
 cd chronocode
 pip install requests python-dotenv rich prompt_toolkit
@@ -215,7 +217,7 @@ python chronocode.py</code></pre>
         </div>
 
         <div class="os-card">
-          <div class="os-head"><span>macOS / Linux</span><button class="copy" type="button">Copiar</button></div>
+          <div class="os-head"><span>💻 macOS / Linux</span><button class="copy" type="button">Copiar</button></div>
           <pre><code>git clone https://github.com/jesusmoralesrodriguez925-spec/chronocode.git
 cd chronocode
 pip3 install requests python-dotenv rich prompt_toolkit
@@ -236,7 +238,7 @@ python3 chronocode.py</code></pre>
         <span class="badge"><img class="local" src="logos/openai.svg" alt="" width="22" height="22" loading="lazy">OpenAI</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/anthropic/ffffff" alt="" width="22" height="22" loading="lazy">Anthropic</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/deepseek/ffffff" alt="" width="22" height="22" loading="lazy">DeepSeek</span>
-        <span class="badge"><img src="https://cdn.simpleicons.org/x/ffffff" alt="" width="22" height="22" loading="lazy">Grok (xAI)</span>
+        <span class="badge"><img src="https://icons.lobehub.com/icons/grok.svg" alt="" width="22" height="22" loading="lazy">Grok (xAI)</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/huggingface/ffffff" alt="" width="22" height="22" loading="lazy">Hugging Face</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/meta/ffffff" alt="" width="22" height="22" loading="lazy">Meta AI</span>
         <span class="badge"><img src="https://cdn.simpleicons.org/mistralai/ffffff" alt="" width="22" height="22" loading="lazy">Mistral AI</span>
@@ -301,56 +303,106 @@ python3 chronocode.py</code></pre>
     if (img.complete && img.naturalWidth === 0) hide();
   });
 
-  /* ---------- Typewriter ---------- */
+  /* ---------- Terminal: simulación del agente en bucle ---------- */
   (function () {
     var term = document.getElementById("term");
-    var esc = function (s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;"); };
-    var steps = [
-      { prompt: "$ ", text: "chronocode", type: true },
-      { prompt: "", text: "\nChronoCode [Gemini] listo. Escribe /help para ver los comandos.\n", type: false },
-      { prompt: "\n> ", text: "crea un archivo hola.py con un saludo", type: true },
-      { prompt: "", text: "\n\u2714 Guardado: hola.py (1 l\u00ednea)\n", type: false, ok: true }
-    ];
-    var html = "";
-    function render(cursor) {
-      term.innerHTML = html + (cursor ? '<span class="cursor"></span>' : "");
-    }
+    var esc = function (s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); };
+    var BANNER = [
+      "  ▄████████▄",
+      "  ██  ██  ██",
+      "",
+      "███ ██████████ ███",
+      "▀▀▀ ██████████ ▀▀▀",
+      "  ▀████████▀",
+      "ChronoCode v1.0"
+    ].join("\n");
+    var CODE = '# Test.py\nprint("¡Hola desde ChronoCode!")';
+
+    var out = "";
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      steps.forEach(function (s) {
-        html += '<span class="dim">' + esc(s.prompt) + "</span>" + esc(s.text);
+
+    function draw(cursor) {
+      term.innerHTML = out + (cursor ? '<span class="cursor"></span>' : "");
+    }
+    function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+    // Escribe texto letra a letra, con la salida acumulada por delante
+    function typeText(prefixHtml, text, cls) {
+      return new Promise(function (resolve) {
+        var i = 0;
+        (function tick() {
+          if (i < text.length) {
+            i++;
+            var shown = esc(text.slice(0, i));
+            term.innerHTML = out + prefixHtml + '<span class="' + cls + '">' + shown + '</span><span class="cursor"></span>';
+            setTimeout(tick, 35 + Math.random() * 55);
+          } else {
+            out += prefixHtml + '<span class="' + cls + '">' + esc(text) + '</span>\n';
+            resolve();
+          }
+        })();
       });
-      render(false);
-      return;
     }
-    function run(i) {
-      if (i >= steps.length) {
-        setTimeout(function () { html = ""; run(0); }, 4500);
+
+    async function escena() {
+      out = "";
+      // 1. $ chronocode
+      await typeText('<span class="dim">$ </span>', "chronocode", "");
+      await wait(400);
+      // 2. Banner de la mascota
+      out += '<span class="banner">' + esc(BANNER) + '</span>\n\n';
+      draw(false);
+      await wait(700);
+      // 3. > Crea un archivo Test.py
+      await typeText('<span class="dim">&gt; </span>', "Crea un archivo Test.py", "ask");
+      await wait(400);
+      // 4. Respuesta de golpe
+      out += '<span class="ask">ChronoCode:</span> ¡Por supuesto! Creando el archivo...\n\n';
+      draw(false);
+      await wait(500);
+      // 5. Código escrito en tiempo real
+      var prefijo = '<span class="dim">' + "" + '</span>';
+      var i = 0;
+      await new Promise(function (resolve) {
+        (function tick() {
+          if (i < CODE.length) {
+            i++;
+            term.innerHTML = out + '<span class="ask">' + esc(CODE.slice(0, i)) + '</span><span class="cursor"></span>';
+            setTimeout(tick, 30 + Math.random() * 40);
+          } else {
+            out += '<span class="ask">' + esc(CODE) + '</span>\n\n';
+            resolve();
+          }
+        })();
+      });
+      await wait(400);
+      // 6. Confirmación: aparece de golpe y la "s" se escribe
+      out += '<span class="ask">¿Guardar en Test.py? [s/N]: </span>';
+      draw(true);
+      await wait(600);
+      await typeText("", "s", "ask");
+      out = out.replace(/\n$/, "");
+      out += '\n<span class="ok-line">✔ Guardado: Test.py</span>\n';
+      draw(false);
+      // 7. Pausa y reinicio
+      await wait(3000);
+    }
+
+    async function loop() {
+      if (reduce) {
+        out = '<span class="dim">$ </span>chronocode\n' +
+              '<span class="banner">' + esc(BANNER) + '</span>\n\n' +
+              '<span class="dim">&gt; </span>Crea un archivo Test.py\n' +
+              '<span class="ask">ChronoCode:</span> ¡Por supuesto! Creando el archivo...\n\n' +
+              '<span class="ask">' + esc(CODE) + '</span>\n\n' +
+              '<span class="ask">¿Guardar en Test.py? [s/N]: s</span>\n' +
+              '<span class="ok-line">✔ Guardado: Test.py</span>\n';
+        draw(false);
         return;
       }
-      var s = steps[i];
-      html += '<span class="dim">' + esc(s.prompt) + "</span>";
-      if (!s.type) {
-        html += esc(s.text);
-        render(true);
-        setTimeout(function () { run(i + 1); }, 700);
-        return;
-      }
-      var n = 0;
-      (function tick() {
-        if (n < s.text.length) {
-          n++;
-          var shown = html + esc(s.text.slice(0, n));
-          term.innerHTML = shown + '<span class="cursor"></span>';
-          setTimeout(tick, 45 + Math.random() * 60);
-        } else {
-          html += esc(s.text);
-          setTimeout(function () { run(i + 1); }, 600);
-        }
-      })();
+      while (true) { await escena(); }
     }
-    render(true);
-    setTimeout(function () { run(0); }, 600);
+    loop();
   })();
 
   /* ---------- Botones Copiar ---------- */
