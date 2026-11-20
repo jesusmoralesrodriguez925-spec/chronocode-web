@@ -1,4 +1,3 @@
-```markdown
 # ChronoCode · Landing Page
 
 Landing page oficial de **ChronoCode**, el agente de IA de código abierto para la terminal.
